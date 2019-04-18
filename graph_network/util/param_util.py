@@ -15,7 +15,7 @@ def create_default_hyperparams(config_type):
     if config_type == "default":
         hyperparams = tf.contrib.training.HParams(
             model_type="default",
-            model_scope="gnn",
+            model_scope="graph",
             device_num_gpus=1,
             device_default_gpu_id=0,
             device_log_device_placement=False,
