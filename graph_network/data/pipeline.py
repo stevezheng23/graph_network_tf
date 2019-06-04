@@ -1,11 +1,9 @@
 import numpy as np
 import tensorflow as tf
 
-from util.default_util import *
+__all__ = ["DataPipline"]
 
-__all__ = ["GraphPipline"]
-
-class GraphPipline(object):
+class DataPipline(object):
     """graph pipeline"""
     def __init__(self,
                  dataset,
@@ -13,7 +11,7 @@ class GraphPipline(object):
                  enable_shuffle,
                  buffer_size=10000,
                  random_seed=0):
-        """initialize graph pipeline"""
+        """initialize data pipeline"""
         if enable_shuffle == True:
             dataset = dataset.shuffle(buffer_size, random_seed)
         
