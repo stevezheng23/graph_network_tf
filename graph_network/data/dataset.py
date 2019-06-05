@@ -1,4 +1,3 @@
-import os
 import os.path
 
 import numpy as np
@@ -26,10 +25,10 @@ class Dataset(object):
             os.mkdir(self.processed_data_path)
         
         self.dataset_url = dataset_url
+        self.dataset_name = dataset_name
         self._download(self.dataset_url, self.raw_data_path)
         self._process(self.raw_data_path, self.processed_data_path)
-        
-        self.dataset_name = dataset_name
+        self.data_list = self._load(self.processed_data_path)
     
     def _download(self,
                   url,
@@ -40,5 +39,14 @@ class Dataset(object):
                  input_path,
                  output_path):
         raise NotImplementedError
-        
     
+    def _load(self,
+              path):
+        raise NotImplementedError
+    
+    def __len__(self):
+        return len(self.data_list)
+    
+    def __getitem__(self,
+                    idx):
+        return self.data_list[idx]
