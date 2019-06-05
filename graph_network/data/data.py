@@ -31,13 +31,17 @@ class GraphData(object):
                     value):
         setattr(self, key, value)
     
+    def __contains__(self,
+                     key):
+        return key in self.keys
+    
     @property
     def keys(self):
         return [key for key in self.__dict__.keys() if self[key] is not None]
     
-    def __contains__(self,
-                     key):
-        return key in self.keys
+    @property
+    def values(self):
+        return [self[key] for key in self.__dict__.keys() if self[key] is not None]
     
     @property
     def num_nodes(self):
