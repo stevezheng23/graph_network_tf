@@ -1,1 +1,1 @@
-__all__ = ["data", "pipeline"]
+__all__ = ["data", "pipeline", "download"]
