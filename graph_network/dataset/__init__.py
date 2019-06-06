@@ -1,1 +1,1 @@
-__all__ = ["citation_dataset"]
+__all__ = ["dataset", "citation_dataset"]
