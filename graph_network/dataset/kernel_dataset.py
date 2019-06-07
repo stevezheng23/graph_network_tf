@@ -1,5 +1,11 @@
+import os.path
+import shutil
+
 import numpy as np
 import tensorflow as tf
+
+from data.utility import *
+from dataset.dataset import *
 
 __all__ = ["KernelDataset"]
 
@@ -7,10 +13,10 @@ class KernelDataset(Dataset):
     """kernel dataset"""
     def __init__(self,
                  base_path,
-                 dataset_url="https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets",
-                 dataset_name="kernel"):
+                 dataset_name="kernel",
+                 dataset_url="https://ls11-www.cs.tu-dortmund.de/people/morris/graphkerneldatasets"):
         """initialize kernel dataset"""
-        super(KernelDataset, self).__init__(base_path, dataset_url, dataset_name)
+        super(KernelDataset, self).__init__(base_path, dataset_name, dataset_url)
     
     @property
     def remote_files(self):
@@ -24,7 +30,7 @@ class KernelDataset(Dataset):
     def _download(self):
         data_url = '{0}/{1}.zip'.format(self.dataset_url, self.dataset_name)
         data_path = '{0}/{1}.zip'.format(self.tmp_data_path, self.dataset_name)
-        download_url(data_url, data_path)
+        download_from_url(data_url, data_path)
         extract_zip(data_path, self.tmp_data_path)
         os.remove(data_path)
         shutil.rmtree(self.raw_data_path)
