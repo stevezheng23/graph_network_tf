@@ -1,4 +1,5 @@
 {
+    "data_log_output_dir": "output/att_enc/log",
     "model_type": "default",
     "model_scope": "graph",
     "device_num_gpus": 1,
