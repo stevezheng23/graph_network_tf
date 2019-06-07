@@ -1,7 +1,10 @@
+import os.path
+
 import numpy as np
 import tensorflow as tf
 
-from data.download import *
+from data.utility import *
+from dataset.dataset import *
 
 __all__ = ["CitationDataset"]
 
@@ -9,8 +12,8 @@ class CitationDataset(Dataset):
     """citation dataset"""
     def __init__(self,
                  base_path,
-                 dataset_url="https://github.com/kimiyoung/planetoid/raw/master/data",
-                 dataset_name="citation"):
+                 dataset_name="citation",
+                 dataset_url="https://github.com/kimiyoung/planetoid/raw/master/data"):
         """initialize citation dataset"""
         super(CitationDataset, self).__init__(base_path, dataset_url, dataset_name)
     

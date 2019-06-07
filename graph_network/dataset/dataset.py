@@ -9,8 +9,8 @@ class Dataset(object):
     """base dataset"""
     def __init__(self,
                  base_path,
-                 dataset_url=None,
-                 dataset_name="base"):
+                 dataset_name="base",
+                 dataset_url=None):
         """initialize base dataset"""
         self.base_path = base_path
         if not os.path.exists(self.base_path):
@@ -25,6 +25,8 @@ class Dataset(object):
             os.mkdir(self.processed_data_path)
         
         self.tmp_data_path = os.path.join(self.base_path, 'tmp')
+        if not os.path.exists(self.tmp_data_path):
+            os.mkdir(self.tmp_data_path)
         
         self.dataset_url = dataset_url
         self.dataset_name = dataset_name
