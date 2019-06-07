@@ -29,11 +29,8 @@ class CitationDataset(Dataset):
             data_path = os.path.join(self.raw_data_path, remote_file)
             download_from_url(data_url, data_path)
     
-    def _process(self,
-                 input_path,
-                 output_path):
+    def _process(self):
         raise NotImplementedError
     
-    def _load(self,
-              path):
+    def _load(self):
         raise NotImplementedError
