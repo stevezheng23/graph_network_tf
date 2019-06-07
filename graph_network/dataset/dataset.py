@@ -24,24 +24,22 @@ class Dataset(object):
         if not os.path.exists(self.processed_data_path):
             os.mkdir(self.processed_data_path)
         
+        self.tmp_data_path = os.path.join(self.base_path, 'tmp')
+        
         self.dataset_url = dataset_url
         self.dataset_name = dataset_name
-        self._download(self.dataset_url, self.raw_data_path)
-        self._process(self.raw_data_path, self.processed_data_path)
-        self.data_list = self._load(self.processed_data_path)
+        
+        self._download()
+        self._process()
+        self.data_list = self._load()
     
-    def _download(self,
-                  url,
-                  path):
+    def _download(self):
         raise NotImplementedError
     
-    def _process(self,
-                 input_path,
-                 output_path):
+    def _process(self):
         raise NotImplementedError
     
-    def _load(self,
-              path):
+    def _load(self):
         raise NotImplementedError
     
     def __len__(self):
