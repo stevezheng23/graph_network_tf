@@ -47,13 +47,13 @@ class KernelDataset(Dataset):
         node_mask_data = read_text(node_mask_file)
         node_mask = [(idx, int(graph_idx)) for idx, graph_idx in enumerate(node_mask_data)]
         graph_node = { key: [idx for idx, _ in list(group)] for key, group in groupby(node_mask, lambda x: x[1]) }
-        print(len(graph_node))
+        
         edge_list_file = '{0}/{1}_A.txt'.format(input_path, self.dataset_name)
         edge_list_data = read_text(edge_list_file)
         edge_list = [[int(n.strip()) for n in edge.split(',')] for edge in edge_list_data]
         edge_list = [(idx, edge, node_mask[edge[0]-1][1]) for idx, edge in enumerate(edge_list)]
         graph_edge = { key: [(idx, edge) for idx, edge, _ in list(group)] for key, group in groupby(edge_list, lambda x: x[2]) }
-        print(len(graph_edge))
+        
         node_attr_file = '{0}/{1}_node_attributes.txt'.format(input_path, self.dataset_name)
         node_attr_data = read_text(node_attr_file) if os.path.exists(node_attr_file) else None
         if node_attr_data is not None:
