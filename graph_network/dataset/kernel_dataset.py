@@ -53,7 +53,7 @@ class KernelDataset(Dataset):
         edge_list = [[int(n.strip()) for n in edge.split(',')] for edge in edge_list_data]
         edge_list = [(idx, edge, node_mask[edge[0]-1][1]) for idx, edge in enumerate(edge_list)]
         graph_edge = { key: [(idx, edge) for idx, edge, _ in list(group)] for key, group in groupby(edge_list, lambda x: x[2]) }
-        print(graph_edge)
+        
         node_attr_file = '{0}/{1}_node_attributes.txt'.format(input_path, self.dataset_name)
         node_attr_data = read_text(node_attr_file) if os.path.exists(node_attr_file) else None
         if node_attr_data is not None:
@@ -84,6 +84,7 @@ class KernelDataset(Dataset):
         if graph_label_data is not None:
             graph_label_data = [int(label) for label in graph_label_data]
         
+        graph_id_list = sorted(list(set(graph_node.keys()) & set(graph_edge.keys())))
         graph_list = [{
             "edge_list": [edge for _, edge in graph_edge[graph_id]],
             "node_attr": [node_attr_data[node_idx] for node_idx in graph_node[graph_id]] if node_attr_data is not None else None,
@@ -92,7 +93,7 @@ class KernelDataset(Dataset):
             "node_label": [node_label_data[node_idx] for node_idx in graph_node[graph_id]] if node_label_data is not None else None,
             "edge_label": [edge_label_data[edge_idx] for edge_idx, _ in graph_edge[graph_id]] if edge_label_data is not None else None,
             "graph_label": graph_label_data[graph_id-1] if graph_label_data is not None else None,
-        } for graph_id in sorted(graph_node.keys())]
+        } for graph_id in graph_id_list]
         
         output_path = os.path.join(self.processed_data_path, self.dataset_name)
         graph_data_file = '{0}/{1}_graph_data.json'.format(output_path, self.dataset_name)
