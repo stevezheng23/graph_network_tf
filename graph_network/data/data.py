@@ -45,7 +45,7 @@ class GraphData(object):
     
     @property
     def num_nodes(self):
-        for node in [self.node_attr, self.node_label]
+        for node in [self.node_attr, self.node_label]:
             if node is not None:
                 return tf.shape(node)[0]
         
@@ -53,7 +53,7 @@ class GraphData(object):
     
     @property
     def num_edges(self):
-        for edge in [self.edge_list, self.edge_attr, self.edge_label]
+        for edge in [self.edge_list, self.edge_attr, self.edge_label]:
             if edge is not None:
                 return tf.shape(edge)[0]
         
