@@ -15,7 +15,7 @@ class CitationDataset(Dataset):
                  dataset_name="citation",
                  dataset_url="https://github.com/kimiyoung/planetoid/raw/master/data"):
         """initialize citation dataset"""
-        super(CitationDataset, self).__init__(base_path, dataset_url, dataset_name)
+        super(CitationDataset, self).__init__(base_path, dataset_name, dataset_url)
     
     @property
     def remote_files(self):
@@ -24,12 +24,15 @@ class CitationDataset(Dataset):
     
     @property
     def local_file(self):
-        return 'data.{0}'.format(self.dataset_name)
+        return '{0}_graph.json'.format(self.dataset_name)
     
     def _download(self):
+        dataset_path = os.path.join(self.raw_data_path, self.dataset_name)
+        valid_path(dataset_path)
+        
         for remote_file in self.remote_files:
             data_url = '{0}/{1}'.format(self.dataset_url, remote_file)
-            data_path = os.path.join(self.raw_data_path, remote_file)
+            data_path = '{0}/{1}'.format(dataset_path, remote_file)
             download_from_url(data_url, data_path)
     
     def _process(self):

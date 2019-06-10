@@ -28,7 +28,7 @@ class KernelDataset(Dataset):
     
     @property
     def local_file(self):
-        return 'data.{0}'.format(self.dataset_name)
+        return '{0}_graph.json'.format(self.dataset_name)
     
     def _download(self):
         data_url = '{0}/{1}.zip'.format(self.dataset_url, self.dataset_name)
@@ -96,7 +96,7 @@ class KernelDataset(Dataset):
         } for graph_id in graph_id_list]
         
         output_path = os.path.join(self.processed_data_path, self.dataset_name)
-        graph_data_file = '{0}/{1}_graph_data.json'.format(output_path, self.dataset_name)
+        graph_data_file = '{0}/{1}_graph.json'.format(output_path, self.dataset_name)
         save_json(graph_list, graph_data_file)
     
     def _load(self):
