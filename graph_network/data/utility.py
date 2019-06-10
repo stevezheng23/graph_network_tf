@@ -1,12 +1,13 @@
 import os.path
 import json
+import pickle
 import urllib.request
 import shutil
 import tarfile
 import zipfile
 
-__all__ = ["download_from_url", "extract_zip", "extract_tar",
-           "valid_path", "clear_path", "read_text", "read_json", "save_text", "save_json"]
+__all__ = ["download_from_url", "extract_zip", "extract_tar", "valid_path", "clear_path",
+           "read_text", "read_json", "read_pickle", "save_text", "save_json", "save_pickle"]
 
 def download_from_url(data_url,
                       data_path):
@@ -47,6 +48,13 @@ def read_json(data_path):
     else:
         raise FileNotFoundError("input file not found")
 
+def read_pickle(data_path):
+    if os.path.exists(data_path):
+        with open(data_path, "rb") as file:
+            return pickle.load(file)
+    else:
+        raise FileNotFoundError("input file not found")
+
 def save_text(data_list,
               data_path):
     data_folder = os.path.dirname(data_path)
@@ -65,3 +73,12 @@ def save_json(data_list,
     
     with open(data_path, "w") as file:  
         json.dump(data_list, file, indent=4)
+
+def save_pickle(data_list,
+                data_path):
+    data_folder = os.path.dirname(data_path)
+    if not os.path.exists(data_folder):
+        os.mkdir(data_folder)
+    
+    with open(data_path, "wb") as file:  
+        pickle.dump(data_list, file)
