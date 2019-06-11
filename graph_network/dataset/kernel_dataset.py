@@ -43,15 +43,15 @@ class KernelDataset(Dataset):
     
     def _process(self):
         input_path = os.path.join(self.raw_data_path, self.dataset_name)
-        node_mask_file = '{0}/{1}_graph_indicator.txt'.format(input_path, self.dataset_name)
-        node_mask_data = read_text(node_mask_file)
-        node_mask = [(idx, int(graph_idx)) for idx, graph_idx in enumerate(node_mask_data)]
-        graph_node = { key: [idx for idx, _ in list(group)] for key, group in groupby(node_mask, lambda x: x[1]) }
+        node_index_file = '{0}/{1}_graph_indicator.txt'.format(input_path, self.dataset_name)
+        node_index_data = read_text(node_index_file)
+        node_index = [(idx, int(graph_idx)) for idx, graph_idx in enumerate(node_index_data)]
+        graph_node = { key: [idx for idx, _ in list(group)] for key, group in groupby(node_index, lambda x: x[1]) }
         
         edge_list_file = '{0}/{1}_A.txt'.format(input_path, self.dataset_name)
         edge_list_data = read_text(edge_list_file)
         edge_list = [[int(n.strip()) for n in edge.split(',')] for edge in edge_list_data]
-        edge_list = [(idx, edge, node_mask[edge[0]-1][1]) for idx, edge in enumerate(edge_list)]
+        edge_list = [(idx, edge, node_index[edge[0]-1][1]) for idx, edge in enumerate(edge_list)]
         graph_edge = { key: [(idx, edge) for idx, edge, _ in list(group)] for key, group in groupby(edge_list, lambda x: x[2]) }
         
         node_attr_file = '{0}/{1}_node_attributes.txt'.format(input_path, self.dataset_name)
@@ -92,7 +92,7 @@ class KernelDataset(Dataset):
             "graph_attr": graph_attr_data[graph_id] if graph_attr_data is not None else None,
             "node_label": [node_label_data[node_idx] for node_idx in graph_node[graph_id]] if node_label_data is not None else None,
             "edge_label": [edge_label_data[edge_idx] for edge_idx, _ in graph_edge[graph_id]] if edge_label_data is not None else None,
-            "graph_label": graph_label_data[graph_id-1] if graph_label_data is not None else None,
+            "graph_label": graph_label_data[graph_id-1] if graph_label_data is not None else None
         } for graph_id in graph_id_list]
         
         output_path = os.path.join(self.processed_data_path, self.dataset_name)

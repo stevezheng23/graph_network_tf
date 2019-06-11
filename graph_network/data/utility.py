@@ -51,7 +51,7 @@ def read_json(data_path):
 def read_pickle(data_path):
     if os.path.exists(data_path):
         with open(data_path, "rb") as file:
-            return pickle.load(file)
+            return pickle.load(file, encoding='latin1')
     else:
         raise FileNotFoundError("input file not found")
 
