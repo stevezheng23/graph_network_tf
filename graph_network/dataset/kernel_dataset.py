@@ -6,6 +6,7 @@ import tensorflow as tf
 from itertools import groupby
 
 from data.utility import *
+from data.data import *
 from dataset.dataset import *
 
 __all__ = ["KernelDataset"]
@@ -89,10 +90,10 @@ class KernelDataset(Dataset):
             "edge_list": [edge for _, edge in graph_edge[graph_id]],
             "node_attr": [node_attr_data[node_idx] for node_idx in graph_node[graph_id]] if node_attr_data is not None else None,
             "edge_attr": [edge_attr_data[edge_idx] for edge_idx, _ in graph_edge[graph_id]] if edge_attr_data is not None else None,
-            "graph_attr": graph_attr_data[graph_id] if graph_attr_data is not None else None,
-            "node_label": [node_label_data[node_idx] for node_idx in graph_node[graph_id]] if node_label_data is not None else None,
-            "edge_label": [edge_label_data[edge_idx] for edge_idx, _ in graph_edge[graph_id]] if edge_label_data is not None else None,
-            "graph_label": graph_label_data[graph_id-1] if graph_label_data is not None else None
+            "graph_attr": [graph_attr_data[graph_id]] if graph_attr_data is not None else None,
+            "node_label": [[node_label_data[node_idx]] for node_idx in graph_node[graph_id]] if node_label_data is not None else None,
+            "edge_label": [[edge_label_data[edge_idx]] for edge_idx, _ in graph_edge[graph_id]] if edge_label_data is not None else None,
+            "graph_label": [[graph_label_data[graph_id-1]]] if graph_label_data is not None else None
         } for graph_id in graph_id_list]
         
         output_path = os.path.join(self.processed_data_path, self.dataset_name)
@@ -100,4 +101,17 @@ class KernelDataset(Dataset):
         save_json(graph_list, graph_data_file)
     
     def _load(self):
-        raise NotImplementedError
+        data_path = os.path.join(self.processed_data_path, self.dataset_name)
+        graph_data_file = '{0}/{1}_graph.json'.format(data_path, self.dataset_name)
+        graph_data_list = read_json(graph_data_file)
+        graph_list = [GraphData(
+            edge_list=graph_data["edge_list"],
+            node_attr=graph_data["node_attr"],
+            edge_attr=graph_data["edge_attr"],
+            graph_attr=graph_data["graph_attr"],
+            node_label=graph_data["node_label"],
+            edge_label=graph_data["edge_label"],
+            graph_label=graph_data["graph_label"]
+        ) for graph_data in graph_data_list]
+        
+        return graph_list
