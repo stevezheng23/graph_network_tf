@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 from data.utility import *
+from data.data import *
 from dataset.dataset import *
 
 __all__ = ["CitationDataset"]
@@ -107,4 +108,16 @@ class CitationDataset(Dataset):
         save_json(graph_list, graph_data_file)
     
     def _load(self):
-        raise NotImplementedError
+        data_path = os.path.join(self.processed_data_path, self.dataset_name)
+        graph_data_file = '{0}/{1}_graph.json'.format(data_path, self.dataset_name)
+        graph_data_list = read_json(graph_data_file)
+        graph_list = [GraphData(
+            edge_list=graph_data["edge_list"],
+            node_attr=graph_data["node_attr"],
+            node_label=graph_data["node_label"],
+            train_mask=graph_data["train_mask"],
+            dev_mask=graph_data["dev_mask"],
+            test_mask=graph_data["test_mask"]
+        ) for graph_data in graph_data_list]
+        
+        return graph_list
