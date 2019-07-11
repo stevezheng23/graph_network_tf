@@ -8,11 +8,14 @@ class GraphData(object):
     def __init__(self,
                  edge_list,
                  node_attr,
-                 edge_attr,
-                 graph_attr,
+                 edge_attr=None,
+                 graph_attr=None,
                  node_label=None,
                  edge_label=None,
-                 graph_label=None):
+                 graph_label=None,
+                 train_mask=None,
+                 dev_mask=None,
+                 test_mask=None):
         """initialize graph data"""
         self.edge_list = edge_list
         self.node_attr = node_attr
@@ -21,6 +24,9 @@ class GraphData(object):
         self.node_label = node_label
         self.edge_label = edge_label
         self.graph_label = graph_label
+        self.train_mask = train_mask
+        self.dev_mask = dev_mask
+        self.test_mask = test_mask
     
     def __getitem__(self,
                     key):
